@@ -71,6 +71,9 @@ export default class Scrollbar extends Controller<ScrollbarOption> {
         // not exist, create
         this.scrollbar = this.createScrollbar();
         this.scrollbar.component.on('scrollchange', this.onChangeFn);
+        this.view.on('mousewheel', (e: any) => {
+          this.setValue(this.ratio + e.event.deltaY / 100);
+        });
       }
     } else {
       if (this.scrollbar) {
