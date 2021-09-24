@@ -62,7 +62,7 @@ export default class Scrollbar extends Controller<ScrollbarOption> {
    */
   public render() {
     this.option = this.view.getOptions().scrollbar;
-
+    const { type } = this.getValidScrollbarCfg();
     if (this.option) {
       if (this.scrollbar) {
         // exist, update
@@ -72,7 +72,8 @@ export default class Scrollbar extends Controller<ScrollbarOption> {
         this.scrollbar = this.createScrollbar();
         this.scrollbar.component.on('scrollchange', this.onChangeFn);
         this.view.on('mousewheel', (e: any) => {
-          this.setValue(this.ratio + e.event.deltaY / 100);
+          const { deltaX, deltaY } = e.event;
+          this.setValue(this.ratio + (type === 'horizontal' ? deltaX : deltaY) / 100);
         });
       }
     } else {
