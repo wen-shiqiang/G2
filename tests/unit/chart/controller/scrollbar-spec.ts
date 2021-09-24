@@ -84,6 +84,85 @@ describe('Scrollbar', () => {
     expect(chart.filteredData.length).toBe(14);
   });
 
+  it('scrollbar get set value', async () => {
+    const chart = new Chart({
+      container,
+      height: 500,
+      width: 400,
+    });
+    chart.data(salesBySubCategory);
+    chart.option('scrollbar', {
+      type: 'vertical',
+    });
+    chart.scale('sales', {
+      nice: true,
+      formatter: (v) => `${Math.floor(v / 10000)}万`,
+    });
+    chart.coordinate().transpose();
+    chart.interval().position('subCategory*sales').label('sales');
+
+    chart.render();
+
+    await delay(1);
+
+    const scrollbar = chart.getController('scrollbar');
+    expect(scrollbar.getValue()).toBe(0);
+
+    scrollbar.setValue(0.5);
+    await delay(1);
+    expect(scrollbar.getValue()).toBe(0.5);
+
+    scrollbar.setValue(1);
+    await delay(1);
+    expect(scrollbar.getValue()).toBe(1);
+    chart.destroy();
+  });
+
+  it('scrollbar mousewheel', async () => {
+    const chart = new Chart({
+      container,
+      height: 500,
+      width: 400,
+    });
+    chart.data(salesBySubCategory);
+    chart.option('scrollbar', {
+      type: 'vertical',
+    });
+    chart.scale('sales', {
+      nice: true,
+      formatter: (v) => `${Math.floor(v / 10000)}万`,
+    });
+    chart.coordinate().transpose();
+    chart.interval().position('subCategory*sales').label('sales');
+
+    chart.render();
+
+    await delay(1);
+
+    const scrollbar = chart.getController('scrollbar');
+
+    chart.emit('mousewheel', { event: { deltaY: 20 } });
+    await delay(1);
+    expect(scrollbar.getValue()).toBe(0.2);
+
+    chart.emit('mousewheel', { event: { deltaY: 30 } });
+    await delay(1);
+    expect(scrollbar.getValue()).toBe(0.5);
+
+    chart.emit('mousewheel', { event: { deltaY: -20 } });
+    await delay(1);
+    expect(scrollbar.getValue()).toBe(0.3);
+
+    chart.emit('mousewheel', { event: { deltaY: 200 } });
+    await delay(1);
+    expect(scrollbar.getValue()).toBe(1);
+
+    chart.emit('mousewheel', { event: { deltaY: -200 } });
+    await delay(1);
+    expect(scrollbar.getValue()).toBe(0);
+    chart.destroy();
+  });
+
   it('scrollbar /w grouped interval horizontal', async () => {
     const chart = new Chart({
       container,
