@@ -231,7 +231,8 @@ describe('View', () => {
   });
 
   it('getGroupScales', () => {
-    expect(view.getGroupScales().map((s) => s.field)).toEqual([]);
+    // sale 作为 color 通道，理论上应该作为分组 scales
+    expect(view.getGroupScales().map((s) => s.field)).toEqual(['sale']);
   });
 
   it('getLegendAttributes', () => {

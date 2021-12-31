@@ -147,7 +147,7 @@ describe('chart multi view', () => {
     const point = v1.getXY({ city: '呼和浩特', sale: 40, category: '电脑' });
     const records = chart.getSnapRecords(point);
 
-    expect(records.length).toBe(1);
+    expect(records.length).toBe(2);
     expect(records[0]._origin).toEqual({ city: '呼和浩特', sale: 40, category: '电脑' });
   });
 
