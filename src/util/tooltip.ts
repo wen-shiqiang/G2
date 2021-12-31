@@ -104,9 +104,11 @@ function getAttributesForLegend(geometry: Geometry) {
   const attributes = values(geometry.attributes);
   return filter(attributes, (attribute: Attribute) => contains(GROUP_ATTRS, attribute.type));
 }
-
+/**
+ * tooltip 获取分组 scale，不应该和 legend 保持同步
+ */
 function getTooltipValueScale(geometry: Geometry) {
-  const attributes = getAttributesForLegend(geometry);
+  const attributes = filter(values(geometry.attributes), (attribute: Attribute) => contains(['size'], attribute.type));
   let scale;
   for (const attribute of attributes) {
     const tmpScale = attribute.getScale(attribute.type);

@@ -1210,10 +1210,7 @@ export default class Geometry<S extends ShapePoint = ShapePoint> extends Base {
       id = `${xVal}-${yVal}`;
     }
 
-    let groupScales = this.groupScales;
-    if (isEmpty(groupScales)) {
-      groupScales = get(this.getAttribute('color'), 'scales', []);
-    }
+    const groupScales = this.groupScales;
 
     for (let index = 0, length = groupScales.length; index < length; index++) {
       const groupScale = groupScales[index];
@@ -1685,7 +1682,7 @@ export default class Geometry<S extends ShapePoint = ShapePoint> extends Base {
         // 获取每一个字段对应的 scale
         const scales = fields.map((field) => {
           const scale = this.scales[field];
-          if (scale.isCategory && !tmpMap[field] && GROUP_ATTRS.includes(attrType)) {
+          if (!tmpMap[field] && GROUP_ATTRS.includes(attrType)) {
             this.groupScales.push(scale);
             tmpMap[field] = true;
           }
